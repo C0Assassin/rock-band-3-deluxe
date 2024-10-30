@@ -148,54 +148,9 @@
                   {! {gamemode in_mode trainer}}
                }
                {dx_toggle_fail_feedback}
+               {dx_game_hud_label dx_hud_label_band_streak $dx_hud_band_streak_text_size $dx_hud_band_streak_text_font $dx_hud_band_streak_text_alignment $dx_hud_band_streak_text_kerning $dx_hud_band_streak_text_x $dx_hud_band_streak_text_z $dx_hud_band_streak_text_y $dx_hud_band_streak_text_r $dx_hud_band_streak_text_g $dx_hud_band_streak_text_b TRUE}
                {{coop_track_panel find scoreboard} set_showing $dx_score_meter_visibility}
-               {{{coop_track_panel find scoreboard} find tracker_band_display} set_display_type kBandTrackerDisplayType_Text}
-               {if {gamemode in_mode campaign}
-                  {{{coop_track_panel find scoreboard} find tracker_band_display} set_display_style kBandTrackerDisplayStyle_Campaign}
-               }
-               {if {gamemode in_mode tour}
-                  {{{coop_track_panel find scoreboard} find tracker_band_display} set_display_style kBandTrackerDisplayStyle_Tour}
-               }
-               {if {&& {! {gamemode in_mode tour}} {! {gamemode in_mode campaign}}}
-                  {{{coop_track_panel find scoreboard} find tracker_band_display} set_challenge_type kTrackerChallengeType_Streak}
-                  {if
-                     {||
-                        {|| {== $dx_time_remaining down} {== $dx_time_remaining up}}
-                        {&& {== $dx_streak_counter single} {== $dx_num_active_instruments 1}}
-                        {&& {== $dx_streak_counter multi} {> $dx_num_active_instruments 0}}
-                     }
-                     ;{{{coop_track_panel find scoreboard} find tracker_band_display} find sb_bg.mesh set_showing TRUE} ;ensure that it is visible at a base level
-                     {{{{coop_track_panel find scoreboard} find tracker_band_display} find tg_main_text_middle.lbl} set_showing TRUE} ;ensure that it is visible at a base level
-                     {{{coop_track_panel find scoreboard} find tracker_band_display} set_challenge_type kTrackerChallengeType_Streak} ;set tracker type to streak
-                     {{{coop_track_panel find scoreboard} find tracker_band_display} set_showing 1} ;ensure that it is visible at a base level
-                     {{{coop_track_panel find scoreboard} find tracker_band_display} set_local_pos_index 2 {+ {{{coop_track_panel find scoreboard} find tracker_band_display} get_local_pos_index 2} 1.35}} ;move it up a bit
-                     {{{coop_track_panel find scoreboard} find tracker_band_display} show os_blnk} ;fire the tracker's show trigger, defaulting it to os_blnk string
-                     {{{coop_track_panel find scoreboard} find tracker_band_display} set_success_state TRUE} ;fire the tracker's show trigger, defaulting it to os_blnk string
-                     {{{{coop_track_panel find scoreboard} find tracker_band_display} find tg_main_text_middle.lbl} set_int 0 TRUE} ;set the value to 0 to start
-                  }
-                  {if_else {== $dx_streak_counter off}
-                     {do
-                        {{{coop_track_panel find scoreboard} find tracker_band_display} iterate Mesh $m {$m set_showing FALSE}} ;ensure that it is visible at a base level
-                        {{{{coop_track_panel find scoreboard} find tracker_band_display} find tg_main_text_middle.lbl} set_showing FALSE} ;ensure that it is visible at a base level
-                     }
-                     {if_else
-                        {||
-                           {&& {== $dx_streak_counter single} {== $dx_num_active_instruments 1}}
-                           {&& {== $dx_streak_counter multi} {> $dx_num_active_instruments 0}}
-                        }
-                        {do
-                           {{{coop_track_panel find scoreboard} find tracker_band_display} iterate Mesh $m {$m set_showing TRUE}} ;ensure that it is visible at a base level
-                           {{{{coop_track_panel find scoreboard} find tracker_band_display} find tg_main_text_middle.lbl} set_showing TRUE} ;ensure that it is visible at a base level
-                        }
-                        {do
-                           {{{coop_track_panel find scoreboard} find tracker_band_display} iterate Mesh $m {$m set_showing FALSE}} ;ensure that it is visible at a base level
-                           {{{{coop_track_panel find scoreboard} find tracker_band_display} find tg_main_text_middle.lbl} set_showing FALSE} ;ensure that it is visible at a base level
-                        }
-                     }
-                  }
-                  {dx_mtv_time_remaining_handler} ;this will set up a script to run itself every half a second
-               }
-               {dx_reset_time_remaining_position}
+               {dx_mtv_time_remaining_handler}
             }
             ;reset "bass groove" text
             {beatmatch foreach_active_player $player
@@ -336,86 +291,85 @@
       {beatmatch foreach_active_player $player ;handle adding the appropriate callbacks to each player
          {unless {== {$player instrument} vocals}
             {if {== {$player instrument} $instrument}
-               {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                {switch $instrument ;switch based off the currently loaded instrument
                   (guitar
                      {if_else {== {+ $num_gems_miss_guitar $num_gems_pass_guitar} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_guitar {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_guitar}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_guitar}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (bass
                      {if_else {== {+ $num_gems_miss_bass $num_gems_pass_bass} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_bass {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_bass}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_bass}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (real_guitar
                      {if_else {== {+ $num_gems_miss_real_guitar $num_gems_pass_real_guitar} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_real_guitar {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_guitar}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_guitar}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (real_bass
                      {if_else {== {+ $num_gems_miss_real_bass $num_gems_pass_real_bass} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_real_bass {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_bass}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_bass}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (keys
                      {if_else {== {+ $num_gems_miss_keys $num_gems_pass_keys} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_keys {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_keys}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_keys}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (real_keys
                      {if_else {== {+ $num_gems_miss_real_keys $num_gems_pass_real_keys} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_real_keys {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_keys}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_keys}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (drum
                      {if_else {== {+ $num_gems_miss_drum $num_gems_pass_drum} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_drum {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_drum}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_drum}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                   (real_drum
                      {if_else {== {+ $num_gems_miss_real_drum $num_gems_pass_real_drum} 0}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y 1 0.75 0.25 FALSE}
-                        {dx_track_label dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_x $dx_highway_streak_text_y $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
+                        {dx_track_label_streak dx_track_label_streak $dx_highway_streak_text_size $dx_highway_streak_text_font $dx_highway_streak_text_alignment $dx_highway_streak_text_kerning $dx_highway_streak_text_r $dx_highway_streak_text_g $dx_highway_streak_text_b FALSE}
                      }
                      {if_else {> $num_gems_combo_real_drum {if_else $dx_highway_streak_text_gh3_delay 24 0}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_drum}}
-                        {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt dx_indv_combo $num_gems_combo_real_drum}}
+                        {{{{DX_FIND_LANED_TRACK find band_power_meter} find {sprint "dx_track_label_streak" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
                      }
                   )
                }
@@ -445,6 +399,7 @@
             {set $dx_current_player_name_sanitized $dx_name}
 
             {dx_track_label dx_track_label_username $dx_highway_username_text_size $dx_highway_username_text_font $dx_highway_username_text_alignment $dx_highway_username_text_kerning $dx_highway_username_text_x $dx_highway_username_text_y $dx_highway_username_text_r $dx_highway_username_text_g $dx_highway_username_text_b FALSE}
+            {dx_track_label_instrument dx_track_label_instrument {$player instrument} FALSE}
             {if_else $dx_current_player_name_sanitized
                {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_username" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt {sprint $dx_current_player_name_sanitized}}}
                {{{DX_FIND_LANED_TRACK find {sprint "dx_track_label_username" {{$player get_user} get_slot_num} ".lbl"}} set_token_fmt os_blnk}}
@@ -475,7 +430,7 @@
       {beatmatch foreach_active_player $player ;handle adding the appropriate callbacks to each player
          {unless {== {$player instrument} vocals}
             {if_else {|| {$player is_deploying} {>= {$player band_energy} 0.50}}
-               {dx_track_label dx_track_label_overdrive $dx_highway_overdrive_text_size $dx_highway_overdrive_text_font $dx_highway_overdrive_text_alignment $dx_highway_overdrive_text_kerning $dx_highway_overdrive_text_x $dx_highway_overdrive_text_y 1 0.75 0.25 FALSE}
+               {dx_track_label dx_track_label_overdrive $dx_highway_overdrive_text_size $dx_highway_overdrive_text_font $dx_highway_overdrive_text_alignment $dx_highway_overdrive_text_kerning $dx_highway_overdrive_text_x $dx_highway_overdrive_text_y $dx_gold_ui_r $dx_gold_ui_g $dx_gold_ui_b FALSE}
                {dx_track_label dx_track_label_overdrive $dx_highway_overdrive_text_size $dx_highway_overdrive_text_font $dx_highway_overdrive_text_alignment $dx_highway_overdrive_text_kerning $dx_highway_overdrive_text_x $dx_highway_overdrive_text_y $dx_highway_overdrive_text_r $dx_highway_overdrive_text_g $dx_highway_overdrive_text_b FALSE}
             }
             {if_else {>= {$player band_energy} 0.01}
